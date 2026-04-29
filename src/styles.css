@@ -1,1 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Bekind&family=Confortaa:wght@400&display=swap');
+
+body {
+  font-family: Calibri, Arial, sans-serif;
+  font-style: italic;
+  
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Arial Black', Arial, sans-serif;
+  font-style: normal; /* importante para que no sean cursivos */
+}
+
+app-root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+router-outlet + * {
+  flex: 1;
+}
+

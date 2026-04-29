@@ -1,0 +1,65 @@
+<div class="container mt-4">
+
+  <h3>Detalles del Producto ID: {{ productoId }}</h3>
+
+  <!-- FORMULARIO -->
+  <div class="card mb-4">
+    <div class="card-body">
+
+      <div class="mb-3">
+        <label class="form-label">Nombre</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="nuevoDetalle.nombre">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Descripción</label>
+        <input 
+          type="text" 
+          class="form-control" 
+          [(ngModel)]="nuevoDetalle.descripcion">
+      </div>
+
+      <button class="btn btn-success" (click)="guardarDetalle()">
+        {{ editando ? 'Actualizar' : 'Guardar' }}
+      </button>
+
+    </div>
+  </div>
+
+  <!-- TABLA -->
+  <table class="table table-bordered text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let detalle of detalles">
+        <td>{{ detalle.id }}</td>
+        <td>{{ detalle.nombre }}</td>
+        <td>{{ detalle.descripcion }}</td>
+        <td>
+          <button 
+            class="btn btn-warning btn-sm me-2"
+            (click)="editarDetalle(detalle)">
+            Editar
+          </button>
+
+          <button 
+            class="btn btn-danger btn-sm"
+            (click)="eliminarDetalle(detalle.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

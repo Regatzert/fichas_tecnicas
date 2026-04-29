@@ -1,0 +1,60 @@
+/* Estilo de la barra de navegación */
+.navbar {
+  background-color: #198a53; /* Fondo marrón */
+}
+
+/* Estilo de los enlaces del navbar */
+.navbar .nav-link,
+.navbar .navbar-brand {
+  color: white !important; /* Texto blanco */
+  font-size: 1rem; /* Tamaño del texto (puedes ajustar si lo prefieres más grande) */
+}
+.navbar .nav-link {
+  color: white !important; /* Color inicial del texto */
+  font-size: 1.5rem;
+  transition: transform 0.3s ease, color 0.3s ease; /* Transición suave para escala y color */
+}
+
+.navbar .nav-link:hover {
+  color: #ffdd57 !important; /* Color amarillo en hover */
+  transform: scale(1.1); /* Aumenta ligeramente el tamaño del enlace */
+}
+
+.navbar .dropdown-item{
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, color 0.3s ease; /* Transición suave para escala y color */
+}
+/* Ajuste del tamaño del logo */
+.navbar .mi-imagen {
+  height: 4.5rem; /* Ajusta la altura del logo */
+  margin-right: 0.5rem; /* Espaciado entre el logo y el texto */
+  vertical-align: middle; /* Centra verticalmente con el texto */
+}
+
+/* Botón del carrito y login */
+.navbar .btn-outline-primary {
+  color: white;
+  border-color: white;
+}
+
+.navbar .btn-outline-primary:hover {
+  background-color: white;
+  color: #d90677;
+}
+
+/* Estilo del formulario de búsqueda */
+#search-input {
+  background-color: #fff; /* Fondo blanco */
+  border-radius: 20px; /* Bordes redondeados */
+  width: 300px; /* Aumenta el ancho del input */
+  transition: width 0.3s ease; /* Transición suave al cambiar el ancho */
+}
+
+#search-input:focus {
+  width: 400px; /* Ensancha el input cuando tiene foco */
+}
+
+#search-form .btn {
+  border-radius: 20px; /* Bordes redondeados del botón */
+}
+

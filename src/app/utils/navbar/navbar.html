@@ -1,0 +1,42 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="container-fluid">
+    <img src="../../../assets/img/Logo_ASJ.png" alt="Descripción" class="mi-imagen ms-3">
+    <!-- <a class="navbar-brand ms-3" href="#">Santa Fé</a> -->
+    
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="#">Inicio</a>
+        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/nosotros']">Fichas Tecnicas</a>
+        </li> -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Fichas Técnicas
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['/tipo_ficha']">Gestión de Tipo Ficha</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/productos']">Gestión de Productos</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/nosotros']">Gestión de Ficha Tecnica</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/documentos']">Documentos</a>
+        </li>
+      </ul>
+     
+  
+        <div class="d-flex align-items-center gap-2">
+          @if (login.isAuth) {
+            {{ login.user.username }}
+          }@else {
+            <a class="btn btn-outline-primary" [routerLink]="['/login']">Login</a>
+
+          }
+        </div>
+        </div>
+    </div>
+</nav>
+
+<script src="js/search.js"></script>
