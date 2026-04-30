@@ -3,6 +3,7 @@ import { tipoDocumento } from '../../models/tipo-documento/tipo-documento';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { TipoDocumentoService } from '../../services/tipo-documento.service';
 
 @Component({
   selector: 'app-tipo-documento',
@@ -13,20 +14,23 @@ import { ActivatedRoute } from '@angular/router';
 export class TipoDocumento implements OnInit {
 
   documentoId!: number;
-  detalles: tipoDocumento[] = [
-    {
-        id: 1,
-        nombre: 'Manual',
-        descripcion: 'Manual  de Usuario',
-        estado: true
-    },
-    {
-        id: 2,
-        nombre: 'Producción',
-        descripcion: 'Documento de Producción',
-        estado: false
-    },
-  ];
+
+  detalles: TipoDocumento[] = [];
+
+  // detalles: tipoDocumento[] = [
+  //   {
+  //       id: 1,
+  //       nombre: 'Manual',
+  //       descripcion: 'Manual  de Usuario',
+  //       estado: true
+  //   },
+  //   {
+  //       id: 2,
+  //       nombre: 'Producción',
+  //       descripcion: 'Documento de Producción',
+  //       estado: false
+  //   },
+  // ];
 
   nuevoDetalle: tipoDocumento = {
     id: 0,
@@ -37,11 +41,26 @@ export class TipoDocumento implements OnInit {
 
   editando: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private documentoService: TipoDocumentoService
+  ) {}
 
   ngOnInit(): void {
     this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Documento ID:', this.documentoId);
+    this.cargarDocumentos();
+  }
+
+   cargarDocumentos() {
+    this.documentoService.listar().subscribe({
+      next: (data) => {
+        this.detalles = data;
+        console.log('Datos API:', data);
+      },
+      error: (err) => {
+        console.error('Error al cargar documentos', err);
+      }
+    });
   }
 
   abrirModalNuevo() {
@@ -49,8 +68,8 @@ export class TipoDocumento implements OnInit {
     this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
   }
 
-  
   guardarDetalle() {
+    // ⚠️ por ahora sigue local (luego lo conectamos a backend)
     if (this.editando) {
       const index = this.detalles.findIndex(d => d.id === this.nuevoDetalle.id);
       this.detalles[index] = { ...this.nuevoDetalle };
@@ -66,7 +85,7 @@ export class TipoDocumento implements OnInit {
     this.editando = false;
   }
 
-  editarDetalle(detalle: tipoDocumento) {
+  editarDetalle(detalle: TipoDocumento) {
     this.nuevoDetalle = { ...detalle };
     this.editando = true;
   }
