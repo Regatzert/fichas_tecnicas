@@ -1,6 +1,8 @@
 
 export class Producto {
   id: number = 0;
-  name: string = '';
-  image: string = '';
+  nombre: string = '';
+  descripcion: string = '';
+  imagen: string = '';
+  estado: boolean = true;
 }

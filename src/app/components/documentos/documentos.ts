@@ -18,18 +18,21 @@ export class Documentos implements OnInit {
   detalles: tipoDocumento[] = [
     {
         id: 1,
-        descripcion: 'Manual',
+        nombre: 'Manual',
+        descripcion: 'Manual  de Usuario',
         estado: true
     },
     {
         id: 2,
-        descripcion: 'Produccion',
+        nombre: 'Producción',
+        descripcion: 'Documento de Producción',
         estado: false
     },
   ];
 
   nuevoDetalle: tipoDocumento = {
     id: 0,
+    nombre: '',
     descripcion: '',
     estado: true
   };
@@ -45,7 +48,7 @@ export class Documentos implements OnInit {
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, descripcion: '', estado: true };
+    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
   }
 
   
@@ -61,7 +64,7 @@ export class Documentos implements OnInit {
       this.detalles.push(nuevo);
     }
 
-    this.nuevoDetalle = { id: 0, descripcion: '', estado: true };
+    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
     this.editando = false;
   }
 

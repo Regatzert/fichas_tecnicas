@@ -21,7 +21,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: Productos },           // listar
     //   { path: 'listar', component: ProductoList },           // listar
-      { path: ':id/detalles', component: ProductoList },
+      { path: ':id/list', component: ProductoList },
       { path: 'nuevo', component: ProductoForm },      // crear
       { path: ':id', component: ProductoForm },        // editar
     //   { path: ':id/detalle', component: ProductoDetalle } // detalle

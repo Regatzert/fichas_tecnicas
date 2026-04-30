@@ -1,38 +1,37 @@
 import { Component, OnInit } from '@angular/core';
-import { Ficha_Tecnica } from '../../models/ficha-tecnica/ficha-tecnica';
-import { ActivatedRoute } from '@angular/router';
+import { tipoDocumento } from '../../models/tipo-documento/tipo-documento';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-ficha-tecnica',
+  selector: 'app-tipo-documento',
   imports: [CommonModule, FormsModule],
-  templateUrl: './ficha-tecnica.html',
-  styleUrl: './ficha-tecnica.css',
+  templateUrl: './tipo-documento.html',
+  styleUrl: './tipo-documento.css',
 })
-export class FichaTecnica implements OnInit {
+export class TipoDocumento implements OnInit {
 
   documentoId!: number;
-
-  detalles: Ficha_Tecnica[] = [
+  detalles: tipoDocumento[] = [
     {
         id: 1,
-        producto: {} as any,
-        tipoFicha: {} as any,
-        tipoDocumento: {} as any,
-        nombreDocumento: 'Manual de Usuario',
-        pdf: new File([], 'manual.pdf'),
+        nombre: 'Manual',
+        descripcion: 'Manual  de Usuario',
         estado: true
+    },
+    {
+        id: 2,
+        nombre: 'Producción',
+        descripcion: 'Documento de Producción',
+        estado: false
     },
   ];
 
-  nuevoDetalle: Ficha_Tecnica = {
+  nuevoDetalle: tipoDocumento = {
     id: 0,
-    producto: {} as any,
-    tipoFicha: {} as any,
-    tipoDocumento: {} as any,
-    nombreDocumento: '',
-    pdf: new File([], ''),
+    nombre: '',
+    descripcion: '',
     estado: true
   };
 
@@ -47,7 +46,7 @@ export class FichaTecnica implements OnInit {
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, producto: {} as any, tipoFicha: {} as any, tipoDocumento: {} as any, nombreDocumento: '', pdf: new File([], ''), estado: true };
+    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
   }
 
   
@@ -63,11 +62,11 @@ export class FichaTecnica implements OnInit {
       this.detalles.push(nuevo);
     }
 
-    this.nuevoDetalle = { id: 0, producto: {} as any, tipoFicha: {} as any, tipoDocumento: {} as any, nombreDocumento: '', pdf: new File([], ''), estado: true };
+    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
     this.editando = false;
   }
 
-  editarDetalle(detalle: Ficha_Tecnica) {
+  editarDetalle(detalle: tipoDocumento) {
     this.nuevoDetalle = { ...detalle };
     this.editando = true;
   }
@@ -76,9 +75,6 @@ export class FichaTecnica implements OnInit {
     this.detalles = this.detalles.filter(d => d.id !== id);
   }
 
-    handleFileInput($event: Event) {
-throw new Error('Method not implemented.');
-}
 }
 
 

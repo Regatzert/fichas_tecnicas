@@ -1,1 +1,57 @@
-<p>auth works!</p>
+<div class="login-container">
+  <div class="lock-icon">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 448 512"
+      class="animated-lock"
+      id="lock-icon"
+      [ngClass]="{ 'locked': isPasswordFocused }"
+      fill="#343a40"
+      width="100"
+    >
+      <!-- Candado cerrado -->
+      <path
+        *ngIf="isPasswordFocused"
+        d="M400 192h-24V144C376 64.47 311.5 0 232 0S88 64.47 88 144v48H64C28.65 192 0 220.7 0 256v192c0 35.35 28.65 64 64 64h336c35.35 0 64-28.65 64-64V256C448 220.7 419.3 192 400 192zM144 144c0-48.53 39.47-88 88-88s88 39.47 88 88v48H144V144z"
+      ></path>
+      <!-- Candado abierto -->
+      <path
+        *ngIf="!isPasswordFocused"
+        d="M400 192h-24V144C376 64.47 311.5 0 232 0S88 64.47 88 144v48H64C28.65 192 0 220.7 0 256v192c0 35.35 28.65 64 64 64h336c35.35 0 64-28.65 64-64V256C448 220.7 419.3 192 400 192zM144 144c0-48.53 39.47-88 88-88s88 39.47 88 88v48H144V144zm192 64v48H112V208H336z"
+      ></path>
+    </svg>
+  </div>
+
+  <div class="card text-center" style="width: 300px;">
+    <div class="card-header">
+      <h5 class="card-title">Login Page</h5>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            placeholder="Username"
+            [(ngModel)]="user.username"
+          />
+        </div>
+        <div class="mb-3">
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            placeholder="Password"
+            [(ngModel)]="user.password"
+            (focus)="toggleLock(true)"
+            (blur)="toggleLock(false)"
+          />
+        </div>
+        <button class="btn btn-primary w-100 mb-2" type="submit">Ingresar</button>
+        <!-- <button class="btn btn-secondary w-100 mb-2" type="button" (click)="onRegister()">Registrar</button> -->
+
+      </form>
+    </div>
+  </div>
+</div>

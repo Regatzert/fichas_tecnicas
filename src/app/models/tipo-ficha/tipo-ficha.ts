@@ -5,4 +5,5 @@ export class tipoFicha {
     producto!: Producto;
     descripcion: string = '';
     order: number = 1;
+    estado: boolean = true;
 }

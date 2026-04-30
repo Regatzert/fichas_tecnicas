@@ -1,0 +1,156 @@
+<div class="container mt-4">
+
+  <!-- HEADER -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Gestión de Fichas Tecnicas</h3>
+
+    <button 
+      class="btn btn-primary"
+      (click)="abrirModalNuevo()"
+      data-bs-toggle="modal"
+      data-bs-target="#modalDetalle">
+
+      <i class="bi bi-plus-lg me-2"></i>
+      Agregar nueva Ficha Tecnica
+    </button>
+  </div>
+
+  <!-- TABLA -->
+  <table class="table table-bordered text-center">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Producto</th>
+        <th>Tipo Ficha</th>
+        <th>Tipo Documento</th>
+        <th>Nombre Documento</th>
+        <th>Archivo PDF</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let detalle of detalles">
+        <td>{{ detalle.id }}</td>
+        <td>{{ detalle.producto }}</td>
+        <td>{{ detalle.tipoFicha }}</td>
+        <td>{{ detalle.tipoDocumento }}</td>
+        <td>{{ detalle.nombreDocumento }}</td>
+        <td>{{ detalle.pdf }}</td>
+        <td>{{ detalle.estado ? 'Activo' : 'Inactivo' }}</td>
+        <td>
+          <button 
+            class="btn btn-warning btn-sm me-2"
+            (click)="editarDetalle(detalle)"
+            data-bs-toggle="modal"
+            data-bs-target="#modalDetalle">
+            Editar
+          </button>
+
+          <button 
+            class="btn btn-danger btn-sm"
+            (click)="eliminarDetalle(detalle.id)">
+            Eliminar
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<!-- MODAL -->
+<div 
+  class="modal fade" 
+  id="modalDetalle" 
+  tabindex="-1">
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- HEADER -->
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ editando ? 'Editar Ficha Tecnica' : 'Nuevo Ficha Tecnica' }}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+
+        <div class="mb-3">
+          <label class="form-label">Producto</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="nuevoDetalle.producto">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Tipo Ficha</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="nuevoDetalle.tipoFicha">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Tipo Documento</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="nuevoDetalle.tipoDocumento">
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nombre Documento</label>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="nuevoDetalle.nombreDocumento">
+        </div>
+        
+
+         <div class="mb-3">
+          <label class="form-label">Archivo PDF</label>
+          <input 
+            type="file" 
+            class="form-control"
+            (change)="handleFileInput($event)">
+        </div>
+
+        <div class="mb-3 form-check">
+          <input 
+            type="checkbox" 
+            class="form-check-input"
+            id="estadoCheck"
+            [(ngModel)]="nuevoDetalle.estado">
+
+          <label class="form-check-label" for="estadoCheck">Activo</label>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+       
+
+        <button 
+          class="btn btn-success"
+          (click)="guardarDetalle()"
+          data-bs-dismiss="modal">
+
+          {{ editando ? 'Actualizar' : 'Guardar' }}
+        </button>
+
+         <button 
+          class="btn btn-secondary"
+          data-bs-dismiss="modal">
+          Cancelar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

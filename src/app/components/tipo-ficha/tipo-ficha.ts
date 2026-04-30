@@ -19,21 +19,24 @@ export class TipoFicha  implements OnInit {
         id: 1,
         producto: {} as any,
         descripcion: 'Manual',
-        order: 1
+        order: 1,
+        estado: true,
     },
     {
         id: 2,
         producto: {} as any,
         descripcion: 'Produccion',
-        order: 2
+        order: 2,
+        estado: true,
     },
   ];
 
   nuevoDetalle: tipoFicha = {
     id: 0,
     producto: {} as any,
-    descripcion: 'Documento Internacional de Identidad',
-    order: 2
+    descripcion: 'documento',
+    order: 2,
+    estado: true,
   };
 
   editando: boolean = false;
@@ -47,7 +50,7 @@ export class TipoFicha  implements OnInit {
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1 };
+    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1, estado: true };
   }
 
   
@@ -63,7 +66,7 @@ export class TipoFicha  implements OnInit {
       this.detalles.push(nuevo);
     }
 
-    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1 };
+    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1, estado: true };
     this.editando = false;
   }
 

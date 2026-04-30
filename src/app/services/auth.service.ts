@@ -6,7 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class Auth {
-  private url: string = 'localhost:8080/login';
+  // private url: string = 'localhost:8080/login';
+  private url: string = '192.168.30.94:8080/login';
 
   private _token: string | undefined;
 

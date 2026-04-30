@@ -1,5 +1,6 @@
-export class tipoDocumento{
-    id: number = 0;
-    descripcion: string = '';
-    estado: boolean = true;
+export interface tipoDocumento{
+    id: number;
+    nombre: string;
+    descripcion: string;
+    estado: boolean;
 }
