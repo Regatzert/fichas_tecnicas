@@ -2,6 +2,12 @@
   <div class="container-fluid">
     <img src="../../../assets/img/Logo_ASJ.png" alt="Descripción" class="mi-imagen ms-3">
     <!-- <a class="navbar-brand ms-3" href="#">Santa Fé</a> -->
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     
     <div class="collapse navbar-collapse" id="navbarMain">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
@@ -21,9 +27,20 @@
             <li><a class="dropdown-item" [routerLink]="['/ficha_tecnica']">Gestión de Ficha Tecnica</a></li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" [routerLink]="['/documentos']">Documentos</a>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Documentos
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['/tipo_documentos']">Gestión de Tipo Documento</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/documentos']">Gestión de Documentos</a></li>
+          </ul>
         </li>
+
+        <!-- <li class="nav-item">
+          <a class="nav-link" [routerLink]="['/documentos']">Documentos</a>
+        </li> -->
       </ul>
      
   

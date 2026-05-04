@@ -1,13 +1,9 @@
-import { Producto } from "../producto/producto";
-import { tipoDocumento } from "../tipo-documento/tipo-documento";
-import { tipoFicha } from "../tipo-ficha/tipo-ficha";
-
-export class Ficha_Tecnica {
-    id: number = 0;
-    producto!: Producto;
-    tipoFicha!: tipoFicha;
-    tipoDocumento!: tipoDocumento;
-    nombreDocumento: string = '';
-    pdf!: File;
-    estado: boolean = true;
+export interface Ficha_Tecnica {
+    id_ficha_tecnica: number;
+    id_producto : number;
+    id_tipo_ficha: number;
+    id_tipo_documento: number;
+    nombre: string;
+    pdf: File;
+    estado: number;
 }

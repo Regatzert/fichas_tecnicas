@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { tipoDocumento } from '../../models/tipo-documento/tipo-documento';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { TipoDocumentoService } from '../../services/tipo-documento.service';
 
 @Component({
@@ -10,89 +10,89 @@ import { TipoDocumentoService } from '../../services/tipo-documento.service';
   imports: [CommonModule, FormsModule],
   templateUrl: './tipo-documento.html',
   styleUrl: './tipo-documento.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TipoDocumento implements OnInit {
 
-  documentoId!: number;
+  estadoFiltro: number = 1; //  1 = activos, 0 = inactivos
+  detallesOriginal: tipoDocumento[] = [];
 
-  detalles: TipoDocumento[] = [];
-
-  // detalles: tipoDocumento[] = [
-  //   {
-  //       id: 1,
-  //       nombre: 'Manual',
-  //       descripcion: 'Manual  de Usuario',
-  //       estado: true
-  //   },
-  //   {
-  //       id: 2,
-  //       nombre: 'Producción',
-  //       descripcion: 'Documento de Producción',
-  //       estado: false
-  //   },
-  // ];
+  detalles: tipoDocumento[] = [];
 
   nuevoDetalle: tipoDocumento = {
-    id: 0,
+    id_tipo_documento: 0,
     nombre: '',
     descripcion: '',
-    estado: true
+    estado: 1
   };
 
   editando: boolean = false;
 
   constructor(
-    private route: ActivatedRoute,
-    private documentoService: TipoDocumentoService
+    private tipoDocumentoService: TipoDocumentoService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
     this.cargarDocumentos();
   }
-
+  
    cargarDocumentos() {
-    this.documentoService.listar().subscribe({
-      next: (data) => {
-        this.detalles = data;
-        console.log('Datos API:', data);
+    this.tipoDocumentoService.listar().subscribe({
+      next: (resp: any) => {
+        this.detallesOriginal  = resp.data;
+        this.filtrar();
+
+        this.cdr.detectChanges();
       },
       error: (err) => {
-        console.error('Error al cargar documentos', err);
+        console.error('Error al cargar documentos', err.error);
       }
     });
   }
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
+    this.nuevoDetalle = { id_tipo_documento: 0, nombre: '', descripcion: '', estado: 1 };
   }
 
   guardarDetalle() {
-    // ⚠️ por ahora sigue local (luego lo conectamos a backend)
+    const payload = {
+      ...this.nuevoDetalle,
+      estado: this.nuevoDetalle.estado ? 1 : 0, // 🔥 FIX
+      usuario: 'admin' // 🔥 luego lo sacas del login
+    };
+
     if (this.editando) {
-      const index = this.detalles.findIndex(d => d.id === this.nuevoDetalle.id);
-      this.detalles[index] = { ...this.nuevoDetalle };
+      this.tipoDocumentoService.actualizar(payload).subscribe((resp:any)=> {
+        console.log('RESPUESTA UPDATE:', resp);
+        this.cargarDocumentos();
+      });
     } else {
-      const nuevo = {
-        ...this.nuevoDetalle,
-        id: this.detalles.length + 1
-      };
-      this.detalles.push(nuevo);
+      this.tipoDocumentoService.insertar(payload).subscribe((resp:any) => {
+        console.log('RESPUESTA UPDATE:', resp);
+        this.cargarDocumentos();
+      });
     }
 
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
     this.editando = false;
   }
 
-  editarDetalle(detalle: TipoDocumento) {
+  editarDetalle(detalle: tipoDocumento) {
     this.nuevoDetalle = { ...detalle };
+    // console.log('Detalle a editar:', this.nuevoDetalle);
     this.editando = true;
   }
 
-  eliminarDetalle(id: number) {
-    this.detalles = this.detalles.filter(d => d.id !== id);
+  filtrar() {
+  if (this.estadoFiltro === -1) {
+    this.detalles = [...this.detallesOriginal];
+  } else {
+    this.detalles = this.detallesOriginal.filter(
+      x => x.estado == this.estadoFiltro
+    );
   }
+}
 
 }
 

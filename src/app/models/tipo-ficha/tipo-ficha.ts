@@ -1,9 +1,8 @@
-import { Producto } from "../producto/producto";
-
-export class tipoFicha {
-    id:number = 0;
-    producto!: Producto;
-    descripcion: string = '';
-    order: number = 1;
-    estado: boolean = true;
+export interface tipoFicha {
+    id_tipo_ficha:number;
+    id_producto: number;
+    nombre: string;
+    descripcion: string;
+    orden: number;
+    estado: number;
 }

@@ -1,10 +1,8 @@
 <div class="container mt-4">
-
   <!-- HEADER -->
   <div class="card">
     <h5 class="card-header">¡Gestión de Productos!</h5>
-    <div class="card-body text-end">
-
+    <!-- <div class="card-body text-end">
       <button 
         class="btn btn-primary"
         (click)="abrirModalNuevo()"
@@ -13,85 +11,65 @@
         <i class="bi bi-plus-lg me-2"></i>
         Agregar producto
       </button>
-
-    </div>
+    </div> -->
     <section class="my-5 px-3">
-    <div class="row">
-      @for (product of products; track product.id) {
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img [src]="product.imagen" class="card-img-top" [alt]="product.nombre">
+      <div class="row">
+        <div class="col-md-4 mb-4" *ngFor="let product of detalles">
+          <div class="card h-100">
+
+            <!-- IMAGEN -->
+            <img 
+              [src]="getImagen(product)" 
+              class="card-img-top"
+              alt="producto">
 
             <div class="card-body text-center">
               <h5>{{ product.nombre }}</h5>
               <p>{{ product.descripcion }}</p>
-              <p>
-                {{ product.estado ? 'Disponible' : 'No disponible' }}
-              </p>
 
-              <button 
-                class="btn btn-primary me-2"
+              <!-- <p>
+                <span 
+                  class="badge"
+                  [ngClass]="product.estado === 1 ? 'bg-success' : 'bg-danger'">
+                  {{ product.estado === 1 ? 'Disponible' : 'No disponible' }}
+                </span>
+              </p> -->
+
+              <!-- <button 
+                class="btn btn-warning me-2"
                 (click)="editarDetalle(product)"
                 data-bs-toggle="modal"
                 data-bs-target="#modalProducto">
                 Editar
+              </button> -->
+
+              <button 
+                class="btn btn-primary"
+                [routerLink]="['/productos', product.id_producto, 'list']">
+                Detalles
               </button>
-   
-              <button class="btn btn-primary" [routerLink]="['/productos', product.id, 'list']">Detalles</button>  
-
             </div>
           </div>
         </div>
-      }
-    </div>
-  </section>
+      </div>
+    </section>
   </div>
-<!-- 
-   LISTA DE PRODUCTOS
-  <section class="my-5">
-    <div class="row">
-      @for (product of products; track product.id) {
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img [src]="product.imagen" class="card-img-top" [alt]="product.nombre">
-
-            <div class="card-body text-center">
-              <h5>{{ product.nombre }}</h5>
-              <p>{{ product.descripcion }}</p>
-              <p>
-                {{ product.estado ? 'Disponible' : 'No disponible' }}
-              </p>
-
-
-              <button class="btn btn-primary" routerLink="#" disabled>Editar</button>       
-              <button class="btn btn-primary" [routerLink]="['/productos', product.id, 'list']">Detalles</button>  
-
-            </div>
-          </div>
-        </div>
-      }
-    </div>
-  </section> -->
-
 </div>
 
 <!-- MODAL -->
 <div class="modal fade" id="modalProducto" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-
       <!-- HEADER -->
       <div class="modal-header">
         <h5 class="modal-title">
           {{ editando ? 'Editar Producto' : 'Nuevo Producto' }}
         </h5>
-        
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <!-- BODY -->
       <div class="modal-body">
-
         <div class="mb-3">
           <label class="form-label">Nombre</label>
           <input 
@@ -108,14 +86,6 @@
             [(ngModel)]="nuevoDetalle.descripcion">
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Imagen (URL)</label>
-          <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.imagen">
-        </div>
-
         <div class="form-check">
           <input 
             type="checkbox"
@@ -123,12 +93,10 @@
             [(ngModel)]="nuevoDetalle.estado">
           <label class="form-check-label">Disponible</label>
         </div>
-
       </div>
 
       <!-- FOOTER -->
       <div class="modal-footer">
-
         <button 
           class="btn btn-success"
           (click)="guardarDetalle()"
@@ -142,7 +110,6 @@
           Cancelar
         </button>
       </div>
-
     </div>
   </div>
 </div>

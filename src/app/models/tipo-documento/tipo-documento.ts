@@ -1,6 +1,6 @@
 export interface tipoDocumento{
-    id: number;
+    id_tipo_documento: number;
     nombre: string;
     descripcion: string;
-    estado: boolean;
+    estado: number;
 }

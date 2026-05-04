@@ -7,6 +7,13 @@ body {
   
 }
 
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 /* Títulos */
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Arial Black', Arial, sans-serif;
@@ -23,3 +30,6 @@ router-outlet + * {
   flex: 1;
 }
 
+main {
+  flex: 1;
+}

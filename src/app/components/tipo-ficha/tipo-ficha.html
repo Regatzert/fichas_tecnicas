@@ -1,68 +1,85 @@
 <div class="container mt-4">
-
   <!-- HEADER -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Gestión de Tipo de Ficha</h3>
 
-    <button 
+    <!-- <div class="mb-3" style="max-width: 250px;">
+    <label class="form-label">Filtrar por estado</label>
+    
+    <select 
+      class="form-select"
+      [(ngModel)]="estadoFiltro"
+      (change)="filtrar()">
+      <option [value]="1">Activos</option>
+      <option [value]="0">Inactivos</option>
+    </select>
+  </div> -->
+  
+    <button
       class="btn btn-primary"
       (click)="abrirModalNuevo()"
       data-bs-toggle="modal"
-      data-bs-target="#modalDetalle">
-
+      data-bs-target="#modalDetalle"
+    >
       <i class="bi bi-plus-lg me-2"></i>
       Agregar nuevo tipo de ficha
     </button>
   </div>
-
   <!-- TABLA -->
   <table class="table table-bordered text-center">
     <thead class="table-dark">
       <tr>
-        <th>ID</th>
+        <!-- <th>ID</th> -->
         <th>Producto</th>
+        <th>Nombre Ficha</th>
         <th>Descripción</th>
         <th>Orden</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let detalle of detalles">
-        <td>{{ detalle.id }}</td>
-        <td>{{ detalle.producto }}</td>
+        <!-- <td>{{ detalle.id_tipo_ficha }}</td> -->
+        <td>{{ getNombreProducto(detalle.id_producto) }}</td>
+        <td>{{ detalle.nombre }}</td>
         <td>{{ detalle.descripcion }}</td>
-        <td>{{ detalle.order }}</td>
+        <td>{{ detalle.orden }}</td>
         <td>
-          <button 
+        <span 
+            class="badge"
+            [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
+
+            {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
+          </span>
+          </td>
+        
+        <td>
+          <button
             class="btn btn-warning btn-sm me-2"
             (click)="editarDetalle(detalle)"
             data-bs-toggle="modal"
-            data-bs-target="#modalDetalle">
+            data-bs-target="#modalDetalle"
+          >
             Editar
           </button>
-
+          <!-- 
           <button 
             class="btn btn-danger btn-sm"
-            (click)="eliminarDetalle(detalle.id)">
+            (click)="eliminarDetalle(detalle)">
             Eliminar
-          </button>
+          </button> -->
         </td>
       </tr>
     </tbody>
   </table>
-
 </div>
 
 <!-- MODAL -->
-<div 
-  class="modal fade" 
-  id="modalDetalle" 
-  tabindex="-1">
-
+<div class="modal fade" id="modalDetalle" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-
       <!-- HEADER -->
       <div class="modal-header">
         <h5 class="modal-title">
@@ -73,40 +90,45 @@
 
       <!-- BODY -->
       <div class="modal-body">
-
+        <div class="mb-3">
+          <label class="form-label">Nombre Ficha</label>
+          <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.nombre" />
+        </div>
         <div class="mb-3">
           <label class="form-label">Descripción</label>
-          <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.descripcion">
+          <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.descripcion" />
         </div>
         <div class="mb-3">
           <label class="form-label">Producto</label>
+          <select class="form-select" [(ngModel)]="nuevoDetalle.id_producto">
+            <option [ngValue]="0">Seleccione producto</option>
+
+            <option *ngFor="let prod of productos" [ngValue]="prod.id_producto">
+              {{ prod.nombre }}
+            </option>
+          </select>
+          <div class="mb-3">
+            <label class="form-label">Orden</label>
+            <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.orden" />
+          </div>
+          <div class="mb-3 form-check">
           <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.producto">       
+            type="checkbox" 
+            class="form-check-input"
+            id="estadoCheck"
+            [(ngModel)]="nuevoDetalle.estado">
+          <label class="form-check-label" for="estadoCheck">Activo</label>
       </div>
 
-      <!-- FOOTER -->
-      <div class="modal-footer">
-        
-
-        <button 
-          class="btn btn-success"
-          (click)="guardarDetalle()"
-          data-bs-dismiss="modal">
-
-          {{ editando ? 'Actualizar' : 'Guardar' }}
-        </button>
-        <button 
-          class="btn btn-secondary"
-          data-bs-dismiss="modal">
-          Cancelar
-        </button>
+          <!-- FOOTER -->
+          <div class="modal-footer">
+            <button class="btn btn-success" (click)="guardarDetalle()" data-bs-dismiss="modal">
+              {{ editando ? 'Actualizar' : 'Guardar' }}
+            </button>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
       </div>
-
     </div>
   </div>
 </div>

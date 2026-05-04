@@ -15,67 +15,67 @@ export class Documentos implements OnInit {
   documentoId!: number;
 
 
-  detalles: tipoDocumento[] = [
-    {
-        id: 1,
-        nombre: 'Manual',
-        descripcion: 'Manual  de Usuario',
-        estado: true
-    },
-    {
-        id: 2,
-        nombre: 'Producción',
-        descripcion: 'Documento de Producción',
-        estado: false
-    },
-  ];
+  // detalles: tipoDocumento[] = [
+  //   {
+  //       id: 1,
+  //       nombre: 'Manual',
+  //       descripcion: 'Manual  de Usuario',
+  //       estado: true
+  //   },
+  //   {
+  //       id: 2,
+  //       nombre: 'Producción',
+  //       descripcion: 'Documento de Producción',
+  //       estado: false
+  //   },
+  // ];
 
-  nuevoDetalle: tipoDocumento = {
-    id: 0,
-    nombre: '',
-    descripcion: '',
-    estado: true
-  };
+  // nuevoDetalle: tipoDocumento = {
+  //   id: 0,
+  //   nombre: '',
+  //   descripcion: '',
+  //   estado: true
+  // };
 
-  editando: boolean = false;
+  // editando: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  // constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
+    // this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
     console.log('Documento ID:', this.documentoId);
   }
 
-  abrirModalNuevo() {
-    this.editando = false;
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
-  }
+  // abrirModalNuevo() {
+  //   this.editando = false;
+  //   this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
+  // }
 
   
-  guardarDetalle() {
-    if (this.editando) {
-      const index = this.detalles.findIndex(d => d.id === this.nuevoDetalle.id);
-      this.detalles[index] = { ...this.nuevoDetalle };
-    } else {
-      const nuevo = {
-        ...this.nuevoDetalle,
-        id: this.detalles.length + 1
-      };
-      this.detalles.push(nuevo);
-    }
+  // guardarDetalle() {
+  //   if (this.editando) {
+  //     const index = this.detalles.findIndex(d => d.id === this.nuevoDetalle.id);
+  //     this.detalles[index] = { ...this.nuevoDetalle };
+  //   } else {
+  //     const nuevo = {
+  //       ...this.nuevoDetalle,
+  //       id: this.detalles.length + 1
+  //     };
+  //     this.detalles.push(nuevo);
+  //   }
 
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
-    this.editando = false;
-  }
+  //   this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', estado: true };
+  //   this.editando = false;
+  // }
 
-  editarDetalle(detalle: tipoDocumento) {
-    this.nuevoDetalle = { ...detalle };
-    this.editando = true;
-  }
+  // editarDetalle(detalle: tipoDocumento) {
+  //   this.nuevoDetalle = { ...detalle };
+  //   this.editando = true;
+  // }
 
-  eliminarDetalle(id: number) {
-    this.detalles = this.detalles.filter(d => d.id !== id);
-  }
+  // eliminarDetalle(id: number) {
+  //   this.detalles = this.detalles.filter(d => d.id !== id);
+  // }
 
 }
 

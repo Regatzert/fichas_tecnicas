@@ -11,7 +11,7 @@
 }
 .navbar .nav-link {
   color: white !important; /* Color inicial del texto */
-  font-size: 1.5rem;
+  /* font-size: 1.5rem; */
   transition: transform 0.3s ease, color 0.3s ease; /* Transición suave para escala y color */
 }
 
@@ -58,3 +58,24 @@
   border-radius: 20px; /* Bordes redondeados del botón */
 }
 
+.navbar-toggler {
+  border: 1px solid white;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+@media (max-width: 768px) {
+  .navbar .nav-link {
+    font-size: 1rem;
+  }
+
+  .navbar .mi-imagen {
+    height: 3rem;
+  }
+
+  #search-input {
+    width: 100%;
+  }
+}

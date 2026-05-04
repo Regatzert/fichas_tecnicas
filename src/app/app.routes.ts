@@ -4,10 +4,10 @@ import { Auth } from './components/auth/auth';
 import { Forbidden403 } from './components/forbidden403/forbidden403';
 import { Productos } from './components/productos/producto';
 import { ProductoList } from './components/producto-list/producto-list';
-import { ProductoForm } from './components/producto-form/producto-form';
 import { FichaTecnica } from './components/ficha-tecnica/ficha-tecnica';
 import { Documentos } from './components/documentos/documentos';
 import { TipoFicha } from './components/tipo-ficha/tipo-ficha';
+import { TipoDocumento } from './components/tipo-documento/tipo-documento';
 
 export const routes: Routes = [
     {path:'', redirectTo:'/inicio', pathMatch:'full'},
@@ -15,6 +15,7 @@ export const routes: Routes = [
     {path:'login', component: Auth},
     {path:'ficha_tecnica', component: FichaTecnica},
     {path:'documentos', component: Documentos},
+    {path:'tipo_documentos', component: TipoDocumento},
     {path:'tipo_ficha', component: TipoFicha},
     {
     path: 'productos',
@@ -22,8 +23,6 @@ export const routes: Routes = [
       { path: '', component: Productos },           // listar
     //   { path: 'listar', component: ProductoList },           // listar
       { path: ':id/list', component: ProductoList },
-      { path: 'nuevo', component: ProductoForm },      // crear
-      { path: ':id', component: ProductoForm },        // editar
     //   { path: ':id/detalle', component: ProductoDetalle } // detalle
         ]
     },

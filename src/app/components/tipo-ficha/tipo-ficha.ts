@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { tipoFicha } from '../../models/tipo-ficha/tipo-ficha';
 import { ActivatedRoute } from '@angular/router';
+import { ProductoService } from '../../services/producto.service';
+import { TipoFichaService } from '../../services/tipo-ficha.service';
 
 @Component({
   selector: 'app-tipo-ficha',
@@ -11,73 +13,101 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './tipo-ficha.css',
 })
 export class TipoFicha  implements OnInit {
-
-  documentoId!: number;
-
-  detalles: tipoFicha[] = [
-    {
-        id: 1,
-        producto: {} as any,
-        descripcion: 'Manual',
-        order: 1,
-        estado: true,
-    },
-    {
-        id: 2,
-        producto: {} as any,
-        descripcion: 'Produccion',
-        order: 2,
-        estado: true,
-    },
-  ];
+  estadoFiltro: number = 1; //  1 = activos, 0 = inactivos
+  detallesOriginal: tipoFicha[] = [];
+  productos: any[] = [];
+  detalles: tipoFicha[] = [];
 
   nuevoDetalle: tipoFicha = {
-    id: 0,
-    producto: {} as any,
+    id_tipo_ficha: 0,
+    id_producto: 0,
+    nombre: 'nombre',
     descripcion: 'documento',
-    order: 2,
-    estado: true,
+    orden: 2,
+    estado: 1,
   };
 
   editando: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private productoService: ProductoService, 
+    private tipoFichaService: TipoFichaService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Documento ID:', this.documentoId);
+    // this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
+  this.cargarTipoFicha();
+  this.cargarProductos();
   }
+
+  cargarProductos() {
+  this.productoService.listar().subscribe({
+    next: (resp: any) => {
+      this.productos = resp.data;
+      this.cdr.detectChanges();
+    }
+  });
+}
+
+ cargarTipoFicha() {
+  this.tipoFichaService.listar().subscribe({
+    next: (resp: any) => {
+      this.detallesOriginal = resp.data;
+      this.filtrar();
+      this.cdr.detectChanges();
+    }
+  });
+}
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1, estado: true };
+    this.nuevoDetalle = { id_tipo_ficha: 0, id_producto: {} as any, nombre: '', descripcion: '', orden: 1, estado: 1 };
   }
 
   
   guardarDetalle() {
+    const payload = {
+      ...this.nuevoDetalle,
+      estado: this.nuevoDetalle.estado ? 1 : 0, // 🔥 FIX
+      usuario: 'admin' // 🔥 luego lo sacas del login
+    };
+
     if (this.editando) {
-      const index = this.detalles.findIndex(d => d.id === this.nuevoDetalle.id);
-      this.detalles[index] = { ...this.nuevoDetalle };
+      this.tipoFichaService.actualizar(payload).subscribe((resp:any)=> {
+        console.log('RESPUESTA UPDATE:', resp);
+        this.cargarTipoFicha();
+      });
     } else {
-      const nuevo = {
-        ...this.nuevoDetalle,
-        id: this.detalles.length + 1
-      };
-      this.detalles.push(nuevo);
+      this.tipoFichaService.insertar(payload).subscribe((resp:any) => {
+        console.log('RESPUESTA UPDATE:', resp);
+        this.cargarTipoFicha();
+      });
     }
 
-    this.nuevoDetalle = { id: 0, producto: {} as any, descripcion: '', order: 1, estado: true };
     this.editando = false;
   }
-
   editarDetalle(detalle: tipoFicha) {
     this.nuevoDetalle = { ...detalle };
     this.editando = true;
   }
 
   eliminarDetalle(id: number) {
-    this.detalles = this.detalles.filter(d => d.id !== id);
+    // this.detalles = this.detalles.filter(d => d.id !== id);
   }
+
+  getNombreProducto(id: number): string {
+  const prod = this.productos.find(p => p.id_producto === id);
+  return prod ? prod.nombre : 'Sin nombre';
+}
+
+filtrar() {
+  if (this.estadoFiltro === -1) {
+    this.detalles = [...this.detallesOriginal];
+  } else {
+    this.detalles = this.detallesOriginal.filter(
+      x => x.estado == this.estadoFiltro
+    );
+  }
+}
 
 }
 

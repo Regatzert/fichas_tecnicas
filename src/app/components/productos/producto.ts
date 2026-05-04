@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Producto } from '../../models/producto/producto';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { RouterLink } from "@angular/router";
 import { FormsModule } from '@angular/forms';
+import { ProductoService } from '../../services/producto.service';
 
 
 @Component({
@@ -12,68 +13,67 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './producto.css',
 })
 export class Productos implements OnInit{
-  documentoId!: number;
 
-  products: Producto[] = [
-    {
-      id: 1,
-      nombre: 'Arándano',
-      descripcion: 'Arándano fresco y jugoso',
-      imagen: '../../../assets/img/arandano.png',
-      estado: true
-    },
-    {
-      id: 2,
-      nombre: 'Palta',
-      descripcion: 'Palta madura y cremosa',
-      imagen: '../../../assets/img/palta.png',
-      estado: true  
-    },
-    {
-      id: 3,
-      nombre: 'Uva',
-      descripcion: 'Uva dulce y jugosa',
-      imagen: '../../../assets/img/uva.png',
-      estado: true
-    }
-  ];
+  estadoFiltro: number = 1; //  1 = activos, 0 = inactivos
+  detallesOriginal: Producto[] = [];
+  
+  detalles: Producto[] = [];
 
   nuevoDetalle: Producto = {
-    id: 0,
+    id_producto: 0,
     nombre: '',
     descripcion: '',
-    imagen: '',
-    estado: true
+    estado: 1
   };
 
   editando: boolean = false;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private tipoProductoService: ProductoService,
+    private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.documentoId = Number(this.route.snapshot.paramMap.get('id'));
-    console.log('Documento ID:', this.documentoId);
+    this.cargarProductos();
+  }
+
+  cargarProductos() {
+    this.tipoProductoService.listar().subscribe({
+      next: (resp: any) => {
+        this.detallesOriginal  = resp.data;
+        this.filtrar();
+
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Error al cargar productos', err.error);
+      }
+    });
   }
 
   abrirModalNuevo() {
     this.editando = false;
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', imagen: '', estado: true };
+    this.nuevoDetalle = { id_producto: 0, nombre: '', descripcion: '', estado: 1 };
   }
 
   
   guardarDetalle() {
+    const payload = {
+      ...this.nuevoDetalle,
+      estado: this.nuevoDetalle.estado ? 1 : 0, // 🔥 FIX
+      usuario: 'admin' // 🔥 luego lo sacas del login
+    };
+
     if (this.editando) {
-      const index = this.products.findIndex(d => d.id === this.nuevoDetalle.id);
-      this.products[index] = { ...this.nuevoDetalle };
+      this.tipoProductoService.actualizar(payload).subscribe((resp:any)=> {
+        // console.log('RESPUESTA UPDATE:', resp);
+        this.cargarProductos();
+      });
     } else {
-      const nuevo = {
-        ...this.nuevoDetalle,
-        id: this.products.length + 1
-      };
-      this.products.push(nuevo);
+      this.tipoProductoService.insertar(payload).subscribe((resp:any) => {
+        // console.log('RESPUESTA UPDATE:', resp);
+        this.cargarProductos();
+      });
     }
 
-    this.nuevoDetalle = { id: 0, nombre: '', descripcion: '', imagen: '', estado: true };
     this.editando = false;
   }
 
@@ -81,6 +81,32 @@ export class Productos implements OnInit{
     this.nuevoDetalle = { ...detalle };
     this.editando = true;
   }
+
+  getImagen(product: any): string {
+
+  switch (product.nombre) {
+
+    case 'Arandano':
+      return 'assets/img/arandano.png';
+
+    case 'Uva':
+      return 'assets/img/uva.png';
+
+    default:
+      return 'assets/img/palta.png';
+  }
+}
+
+  
+  filtrar() {
+  if (this.estadoFiltro === -1) {
+    this.detalles = [...this.detallesOriginal];
+  } else {
+    this.detalles = this.detallesOriginal.filter(
+      x => x.estado == this.estadoFiltro
+    );
+  }
+}
 
 
 

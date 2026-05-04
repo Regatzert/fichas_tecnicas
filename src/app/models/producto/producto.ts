@@ -1,8 +1,7 @@
 
-export class Producto {
-  id: number = 0;
-  nombre: string = '';
-  descripcion: string = '';
-  imagen: string = '';
-  estado: boolean = true;
+export interface Producto {
+  id_producto: number;
+  nombre: string;
+  descripcion: string;
+  estado: number;
 }

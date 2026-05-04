@@ -4,6 +4,17 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Gestión de Tipos de Documentos</h3>
 
+    <div class="mb-3" style="max-width: 250px;">
+    <label class="form-label">Filtrar por estado</label>
+    
+    <select 
+      class="form-select"
+      [(ngModel)]="estadoFiltro"
+      (change)="filtrar()">
+      <option [value]="1">Activos</option>
+      <option [value]="0">Inactivos</option>
+    </select>
+  </div>
     <button 
       class="btn btn-primary"
       (click)="abrirModalNuevo()"
@@ -14,23 +25,33 @@
       Agregar nuevo tipo de documento
     </button>
   </div>
+  
 
   <!-- TABLA -->
   <table class="table table-bordered text-center">
     <thead class="table-dark">
       <tr>
-        <th>ID</th>
+        <!-- <th>ID</th> -->
         <th>Nombre</th>
         <th>Descripción</th>
+        <th>Estado</th>
         <th>Acciones</th>
       </tr>
     </thead>
 
     <tbody>
       <tr *ngFor="let detalle of detalles">
-        <td>{{ detalle.id }}</td>
+        <!-- <td>{{ detalle.id_tipo_documento }}</td> -->
         <td>{{ detalle.nombre }}</td>
         <td>{{ detalle.descripcion }}</td>
+        <td>
+        <span 
+            class="badge"
+            [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
+
+            {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
+          </span>
+          </td>
         <td>
           <button 
             class="btn btn-warning btn-sm me-2"
@@ -39,17 +60,10 @@
             data-bs-target="#modalDetalle">
             Editar
           </button>
-
-          <button 
-            class="btn btn-danger btn-sm"
-            (click)="eliminarDetalle(detalle.id)">
-            Eliminar
-          </button>
         </td>
       </tr>
     </tbody>
   </table>
-
 </div>
 
 <!-- MODAL -->
@@ -93,9 +107,7 @@
             class="form-check-input"
             id="estadoCheck"
             [(ngModel)]="nuevoDetalle.estado">
-
           <label class="form-check-label" for="estadoCheck">Activo</label>
-
       </div>
 
       <!-- FOOTER -->
