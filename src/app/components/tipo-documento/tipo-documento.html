@@ -1,11 +1,10 @@
 <div class="container mt-4">
-
   <!-- HEADER -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Gestión de Tipos de Documentos</h3>
 
-    <div class="mb-3" style="max-width: 250px;">
-    <!-- <label class="form-label">Filtrar por estado</label>
+    <div class="mb-3" style="max-width: 250px">
+      <!-- <label class="form-label">Filtrar por estado</label>
     
     <select 
       class="form-select"
@@ -14,18 +13,17 @@
       <option [value]="1">Activos</option>
       <option [value]="0">Inactivos</option>
     </select> -->
-  </div>
-    <button 
+    </div>
+    <button
       class="btn btn-primary"
       (click)="abrirModalNuevo()"
       data-bs-toggle="modal"
-      data-bs-target="#modalDetalle">
-
+      data-bs-target="#modalDetalle"
+    >
       <i class="bi bi-plus-lg me-2"></i>
       Agregar nuevo tipo de documento
     </button>
   </div>
-  
 
   <!-- TABLA -->
   <table class="table table-bordered text-center">
@@ -40,41 +38,36 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let detalle of detalles">
-        <!-- <td>{{ detalle.id_tipo_documento }}</td> -->
-        <td>{{ detalle.nombre }}</td>
-        <td>{{ detalle.descripcion }}</td>
-        <td>
-        <span 
-            class="badge"
-            [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
-
-            {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
-          </span>
+      @for (detalle of detalles; track $index) {
+        <tr>
+          <!-- <td>{{ detalle.id_tipo_documento }}</td> -->
+          <td>{{ detalle.nombre }}</td>
+          <td>{{ detalle.descripcion }}</td>
+          <td>
+            <span class="badge" [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
+              {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
+            </span>
           </td>
-        <td>
-          <button 
-            class="btn btn-warning btn-sm me-2"
-            (click)="editarDetalle(detalle)"
-            data-bs-toggle="modal"
-            data-bs-target="#modalDetalle">
-            Editar
-          </button>
-        </td>
-      </tr>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editarDetalle(detalle)"
+              data-bs-toggle="modal"
+              data-bs-target="#modalDetalle"
+            >
+              Editar
+            </button>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
 
 <!-- MODAL -->
-<div 
-  class="modal fade" 
-  id="modalDetalle" 
-  tabindex="-1">
-
+<div class="modal fade" id="modalDetalle" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-
       <!-- HEADER -->
       <div class="modal-header">
         <h5 class="modal-title">
@@ -85,50 +78,34 @@
 
       <!-- BODY -->
       <div class="modal-body">
-
         <div class="mb-3">
           <label class="form-label">Nombre</label>
-          <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.nombre">
+          <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.nombre" />
         </div>
 
         <div class="mb-3">
           <label class="form-label">Descripción</label>
-          <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.descripcion">
+          <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.descripcion" />
         </div>
         <div class="mb-3 form-check">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             class="form-check-input"
             id="estadoCheck"
-            [(ngModel)]="nuevoDetalle.estado">
+            [(ngModel)]="nuevoDetalle.estado"
+          />
           <label class="form-check-label" for="estadoCheck">Activo</label>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="guardarDetalle()" data-bs-dismiss="modal">
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
       </div>
-
-      <!-- FOOTER -->
-      <div class="modal-footer">
-       
-
-        <button 
-          class="btn btn-success"
-          (click)="guardarDetalle()"
-          data-bs-dismiss="modal">
-
-          {{ editando ? 'Actualizar' : 'Guardar' }}
-        </button>
-
-         <button 
-          class="btn btn-secondary"
-          data-bs-dismiss="modal">
-          Cancelar
-        </button>
-      </div>
-
     </div>
   </div>
 </div>

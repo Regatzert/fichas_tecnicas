@@ -111,55 +111,53 @@ export class Documentos implements OnInit {
   guardarDetalle() {
     const formData = new FormData();
 
-  formData.append('id_producto', String(this.nuevoDetalle.id_producto));
-  formData.append('id_tipo_ficha', String(this.nuevoDetalle.id_tipo_ficha));
-  formData.append('id_tipo_documento', String(this.nuevoDetalle.id_tipo_documento));
-  formData.append('nombre_original', this.nuevoDetalle.nombre_original);
-  formData.append('version', String(this.nuevoDetalle.version));
-  formData.append('estado', String(this.nuevoDetalle.estado));
-  // formData.append('pdf', this.nuevoDetalle.pdf);
-  formData.append('usuario', 'admin');
+    formData.append('id_producto', String(this.nuevoDetalle.id_producto));
+    formData.append('id_tipo_ficha', String(this.nuevoDetalle.id_tipo_ficha));
+    formData.append('id_tipo_documento', String(this.nuevoDetalle.id_tipo_documento));
+    formData.append('nombre_original', this.nuevoDetalle.nombre_original);
+    formData.append('version', String(this.nuevoDetalle.version));
+    formData.append('estado', String(this.nuevoDetalle.estado));
+    // formData.append('pdf', this.nuevoDetalle.pdf);
+    formData.append('usuario', 'admin');
 
-  if (this.archivoSeleccionado) {
-    formData.append('archivo', this.archivoSeleccionado);
-  }
+    if (this.archivoSeleccionado) {
+      formData.append('archivo', this.archivoSeleccionado);
+    }
 
-  if (this.editando) {  
-    formData.append('id_documento', String(this.nuevoDetalle.id_documento));
-  }
+    if (this.editando) {
+      formData.append('id_documento', String(this.nuevoDetalle.id_documento));
+    }
 
-  // 🔥 ESTE ES EL DEBUG IMPORTANTE
-  console.log('======= DATOS A ENVIAR =======');
-  formData.forEach((value, key) => {
-    console.log(key, value);
-  });
-  console.log('==============================');
-
-  // 🚀 llamada
-  if (this.editando) {
-    this.documentoService.actualizar(formData).subscribe({
-      next: () => this.cargarDocumento()
+    // 🔥 ESTE ES EL DEBUG IMPORTANTE
+    console.log('======= DATOS A ENVIAR =======');
+    formData.forEach((value, key) => {
+      console.log(key, value);
     });
-  } else {
-    this.documentoService.insertar(formData).subscribe({
-      next: () => this.cargarDocumento()
-    });
-  }
+    console.log('==============================');
 
-  this.editando = false;
+    // 🚀 llamada
+    if (this.editando) {
+      this.documentoService.actualizar(formData).subscribe({
+        next: () => this.cargarDocumento(),
+      });
+    } else {
+      this.documentoService.insertar(formData).subscribe({
+        next: () => this.cargarDocumento(),
+      });
+    }
+
+    this.editando = false;
   }
 
   editarDetalle(detalle: Documento) {
-  this.nuevoDetalle = { ...detalle,
-    pdf: detalle.nombre_original
-   };
+    this.nuevoDetalle = { ...detalle, pdf: detalle.nombre_original };
 
-  // 🔥 ASEGURAR PDF
-  this.nuevoDetalle.pdf = detalle.nombre_original; // 👈 ESTE ES EL CORRECTO
+    // 🔥 ASEGURAR PDF
+    this.nuevoDetalle.pdf = detalle.nombre_original; // 👈 ESTE ES EL CORRECTO
 
-  // console.log('ID A ACTUALIZAR:', this.nuevoDetalle.id_documento);
-  this.editando = true;
-}
+    // console.log('ID A ACTUALIZAR:', this.nuevoDetalle.id_documento);
+    this.editando = true;
+  }
 
   eliminarDetalle(id: number) {
     // this.detalles = this.detalles.filter(d => d.id !== id);

@@ -15,78 +15,79 @@
     </select>
   </div> -->
 
-    <button 
+    <button
       class="btn btn-primary"
       (click)="abrirModalNuevo()"
       data-bs-toggle="modal"
-      data-bs-target="#modalDetalle">
-
+      data-bs-target="#modalDetalle"
+    >
       <i class="bi bi-plus-lg me-2"></i>
       Agregar nuevo Documento
     </button>
   </div>
   <!-- TABLA -->
-   <div class="table-responsive">
-  <table class="table table-bordered text-center">
-    <thead class="table-dark">
-      <tr>
-        <!-- <th>ID</th> -->
-        <th>Producto</th>
-        <th>Tipo Ficha</th>
-        <th>Tipo Documento</th>
-        <th>Nombre Documento</th>
-        <th>Version</th>
-        <th>Archivo PDF</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
+  <div class="table-responsive">
+    <table class="table table-bordered text-center">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th>ID</th> -->
+          <th>Producto</th>
+          <th>Tipo Ficha</th>
+          <th>Tipo Documento</th>
+          <th>Nombre Documento</th>
+          <th>Version</th>
+          <th>Archivo PDF</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let detalle of detalles">
-        <!-- <td>{{ detalle.id }}</td> -->
-        <td>{{ getNombreProducto(detalle.id_producto)  }}</td>
-        <td>{{ getNombreTipoFicha(detalle.id_tipo_ficha)  }}</td>
-        <td>{{ getNombreTipoDocumento(detalle.id_tipo_documento)  }}</td>
-        <td>{{ detalle.nombre_original }}</td>
-        <td>{{ detalle.version }}</td>
-        <!-- <td>{{ detalle.pdf }}</td> -->
-         <td>
-  <a [href]="'http://192.168.30.94:8080/storage/documentos/' + detalle.pdf" target="_blank">
-  Ver PDF
-</a>
-</td>
-        <td>{{ detalle.estado ? 'Activo' : 'Inactivo' }}</td>
-        <td>
-          <button 
-            class="btn btn-warning btn-sm me-2"
-            (click)="editarDetalle(detalle)"
-            data-bs-toggle="modal"
-            data-bs-target="#modalDetalle">
-            Editar
-          </button>
+      <tbody>
+        @for (detalle of detalles; track $index) {
+        <tr>
+          <!-- <td>{{ detalle.id }}</td> -->
+          <td>{{ getNombreProducto(detalle.id_producto) }}</td>
+          <td>{{ getNombreTipoFicha(detalle.id_tipo_ficha) }}</td>
+          <td>{{ getNombreTipoDocumento(detalle.id_tipo_documento) }}</td>
+          <td>{{ detalle.nombre_original }}</td>
+          <td>{{ detalle.version }}</td>
+          <!-- <td>{{ detalle.pdf }}</td> -->
+          <td>
+            <a
+              [href]="'http://192.168.30.94:8080/storage/documentos/' + detalle.pdf"
+              target="_blank"
+            >
+              Ver PDF
+            </a>
+          </td>
+          <td>{{ detalle.estado ? 'Activo' : 'Inactivo' }}</td>
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editarDetalle(detalle)"
+              data-bs-toggle="modal"
+              data-bs-target="#modalDetalle"
+            >
+              Editar
+            </button>
 
-          <!-- <button 
+            <!-- <button 
             class="btn btn-danger btn-sm"
             (click)="eliminarDetalle(detalle)">
             Eliminar
           </button> -->
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <!-- MODAL -->
-<div 
-  class="modal fade" 
-  id="modalDetalle" 
-  tabindex="-1">
-
+<div class="modal fade" id="modalDetalle" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-
       <!-- HEADER -->
       <div class="modal-header">
         <h5 class="modal-title">
@@ -97,34 +98,36 @@
 
       <!-- BODY -->
       <div class="modal-body">
-
         <label class="form-label">Producto</label>
-          <select class="form-select" [(ngModel)]="nuevoDetalle.id_producto">
-            <option [ngValue]="0">Seleccione producto</option>
+        <select class="form-select" [(ngModel)]="nuevoDetalle.id_producto">
+          <option [ngValue]="0">Seleccione producto</option>
 
-            <option *ngFor="let prod of productos" [ngValue]="prod.id_producto">
-              {{ prod.nombre }}
-            </option>
-          </select>
+          @for (prod of productos; track $index) {
+          <option [ngValue]="prod.id_producto">
+            {{ prod.nombre }}
+          </option>
+          }
+        </select>
 
+        <label class="form-label">Tipo Ficha</label>
+        <select class="form-select" [(ngModel)]="nuevoDetalle.id_tipo_ficha">
+          <option [ngValue]="0">Seleccione tipo de ficha</option>
+          @for (tipo of tipoficha; track $index) {
+          <option [ngValue]="tipo.id_tipo_ficha">
+            {{ tipo.nombre }}
+          </option>
+          }
+        </select>
 
-          <label class="form-label">Tipo Ficha</label>
-          <select class="form-select" [(ngModel)]="nuevoDetalle.id_tipo_ficha">
-            <option [ngValue]="0">Seleccione tipo de ficha</option>
-
-            <option *ngFor="let tipo of tipoficha" [ngValue]="tipo.id_tipo_ficha">
-              {{ tipo.nombre }}
-            </option>
-          </select>
-
-          <label class="form-label">Tipo Documento</label>
-          <select class="form-select" [(ngModel)]="nuevoDetalle.id_tipo_documento">
-            <option [ngValue]="0">Seleccione tipo de documento</option>
-
-            <option *ngFor="let tipo of tipodocumento" [ngValue]="tipo.id_tipo_documento">
-              {{ tipo.nombre }}
-            </option>
-          </select>
+        <label class="form-label">Tipo Documento</label>
+        <select class="form-select" [(ngModel)]="nuevoDetalle.id_tipo_documento">
+          <option [ngValue]="0">Seleccione tipo de documento</option>
+          @for (tipo of tipodocumento; track $index) {
+          <option [ngValue]="tipo.id_tipo_documento">
+            {{ tipo.nombre }}
+          </option>
+          }
+        </select>
 
         <!-- <div class="mb-3">
           <label class="form-label">Producto</label>
@@ -133,7 +136,7 @@
             class="form-control"
             [(ngModel)]="nuevoDetalle.producto">
         </div> -->
-<!-- 
+        <!-- 
         <div class="mb-3">
           <label class="form-label">Tipo Ficha</label>
           <input 
@@ -152,61 +155,49 @@
 
         <div class="mb-3">
           <label class="form-label">Nombre Documento</label>
-          <input 
-            type="text" 
-            class="form-control"
-            [(ngModel)]="nuevoDetalle.nombre_original">
+          <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.nombre_original" />
         </div>
 
         <div class="mb-3">
           <label class="form-label">Version</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             class="form-control"
             [(ngModel)]="nuevoDetalle.version"
-            [disabled]="!editando">
+            [disabled]="!editando"
+          />
         </div>
-        
 
-         <div class="mb-3">
+        <div class="mb-3">
           <label class="form-label">Archivo PDF</label>
-          <input 
-            type="file" 
+          <input
+            type="file"
             class="form-control"
             accept="application/pdf"
-            (change)="onFileSelected($event)">
+            (change)="onFileSelected($event)"
+          />
         </div>
 
         <div class="mb-3 form-check">
-          <input 
-            type="checkbox" 
+          <input
+            type="checkbox"
             class="form-check-input"
             id="estadoCheck"
-            [(ngModel)]="nuevoDetalle.estado">
+            [(ngModel)]="nuevoDetalle.estado"
+          />
 
           <label class="form-check-label" for="estadoCheck">Activo</label>
+        </div>
 
+        <!-- FOOTER -->
+        <div class="modal-footer">
+          <button class="btn btn-success" (click)="guardarDetalle()" data-bs-dismiss="modal">
+            {{ editando ? 'Actualizar' : 'Guardar' }}
+          </button>
+
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        </div>
       </div>
-
-      <!-- FOOTER -->
-      <div class="modal-footer">
-       
-
-        <button 
-          class="btn btn-success"
-          (click)="guardarDetalle()"
-          data-bs-dismiss="modal">
-
-          {{ editando ? 'Actualizar' : 'Guardar' }}
-        </button>
-
-         <button 
-          class="btn btn-secondary"
-          data-bs-dismiss="modal">
-          Cancelar
-        </button>
-      </div>
-
     </div>
   </div>
 </div>

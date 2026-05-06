@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { tipoFicha } from '../../models/tipo-ficha/tipo-ficha';
-import { ActivatedRoute } from '@angular/router';
 import { ProductoService } from '../../services/producto.service';
 import { TipoFichaService } from '../../services/tipo-ficha.service';
 
@@ -73,12 +72,12 @@ export class TipoFicha  implements OnInit {
 
     if (this.editando) {
       this.tipoFichaService.actualizar(payload).subscribe((resp:any)=> {
-        console.log('RESPUESTA UPDATE:', resp);
+        // console.log('RESPUESTA UPDATE:', resp);
         this.cargarTipoFicha();
       });
     } else {
       this.tipoFichaService.insertar(payload).subscribe((resp:any) => {
-        console.log('RESPUESTA UPDATE:', resp);
+        // console.log('RESPUESTA INSERT:', resp);
         this.cargarTipoFicha();
       });
     }

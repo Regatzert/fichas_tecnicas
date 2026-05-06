@@ -5,7 +5,6 @@ import Swal from 'sweetalert2';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-auth',
   imports: [FormsModule, CommonModule],
@@ -13,10 +12,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './auth.css',
 })
 export class Auth {
-  
   user: User;
 
-  constructor(private sharingData: SharingData){
+  constructor(private sharingData: SharingData) {
     this.user = new User();
   }
 
@@ -26,16 +24,15 @@ export class Auth {
     this.isPasswordFocused = state;
   }
 
-  onSubmit(){
-    if(!this.user.username || !this.user.password){
-      Swal.fire('Error en la validación ',
-          'Username y password requerido!',
-          'error'
-      )
-    }
-    else{
-      this.sharingData.handlerLoginEventEmitter.emit({username: this.user.username, password: this.user.password});
-      console.log("holas +" + this.user.username + " " + this.user.password);
+  onSubmit() {
+    if (!this.user.username || !this.user.password) {
+      Swal.fire('Error en la validación ', 'Username y password requerido!', 'error');
+    } else {
+      this.sharingData.handlerLoginEventEmitter.emit({
+        username: this.user.username,
+        password: this.user.password,
+      });
+      // console.log('holas +' + this.user.username + ' ' + this.user.password);
     }
   }
 

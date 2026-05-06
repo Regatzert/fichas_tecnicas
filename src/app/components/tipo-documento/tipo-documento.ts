@@ -10,10 +10,9 @@ import { TipoDocumentoService } from '../../services/tipo-documento.service';
   imports: [CommonModule, FormsModule],
   templateUrl: './tipo-documento.html',
   styleUrl: './tipo-documento.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TipoDocumento implements OnInit {
-
   estadoFiltro: number = 1; //  1 = activos, 0 = inactivos
   detallesOriginal: tipoDocumento[] = [];
 
@@ -23,31 +22,31 @@ export class TipoDocumento implements OnInit {
     id_tipo_documento: 0,
     nombre: '',
     descripcion: '',
-    estado: 1
+    estado: 1,
   };
 
   editando: boolean = false;
 
   constructor(
     private tipoDocumentoService: TipoDocumentoService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
     this.cargarDocumentos();
   }
-  
-   cargarDocumentos() {
+
+  cargarDocumentos() {
     this.tipoDocumentoService.listar().subscribe({
       next: (resp: any) => {
-        this.detallesOriginal  = resp.data;
+        this.detallesOriginal = resp.data;
         this.filtrar();
 
         this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('Error al cargar documentos', err.error);
-      }
+      },
     });
   }
 
@@ -60,17 +59,17 @@ export class TipoDocumento implements OnInit {
     const payload = {
       ...this.nuevoDetalle,
       estado: this.nuevoDetalle.estado ? 1 : 0, // 🔥 FIX
-      usuario: 'admin' // 🔥 luego lo sacas del login
+      usuario: 'admin', // 🔥 luego lo sacas del login
     };
 
     if (this.editando) {
-      this.tipoDocumentoService.actualizar(payload).subscribe((resp:any)=> {
-        console.log('RESPUESTA UPDATE:', resp);
+      this.tipoDocumentoService.actualizar(payload).subscribe((resp: any) => {
+        // console.log('RESPUESTA UPDATE:', resp);
         this.cargarDocumentos();
       });
     } else {
-      this.tipoDocumentoService.insertar(payload).subscribe((resp:any) => {
-        console.log('RESPUESTA UPDATE:', resp);
+      this.tipoDocumentoService.insertar(payload).subscribe((resp: any) => {
+        // console.log('RESPUESTA UPDATE:', resp);
         this.cargarDocumentos();
       });
     }
@@ -85,15 +84,10 @@ export class TipoDocumento implements OnInit {
   }
 
   filtrar() {
-  if (this.estadoFiltro === -1) {
-    this.detalles = [...this.detallesOriginal];
-  } else {
-    this.detalles = this.detallesOriginal.filter(
-      x => x.estado == this.estadoFiltro
-    );
+    if (this.estadoFiltro === -1) {
+      this.detalles = [...this.detallesOriginal];
+    } else {
+      this.detalles = this.detallesOriginal.filter((x) => x.estado == this.estadoFiltro);
+    }
   }
 }
-
-}
-
-

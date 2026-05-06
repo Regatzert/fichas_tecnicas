@@ -14,7 +14,7 @@
       <option [value]="0">Inactivos</option>
     </select>
   </div> -->
-  
+
     <button
       class="btn btn-primary"
       (click)="abrirModalNuevo()"
@@ -40,38 +40,37 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let detalle of detalles">
-        <!-- <td>{{ detalle.id_tipo_ficha }}</td> -->
-        <td>{{ getNombreProducto(detalle.id_producto) }}</td>
-        <td>{{ detalle.nombre }}</td>
-        <td>{{ detalle.descripcion }}</td>
-        <td>{{ detalle.orden }}</td>
-        <td>
-        <span 
-            class="badge"
-            [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
-
-            {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
-          </span>
+      @for (detalle of detalles; track $index) {
+        <tr>
+          <!-- <td>{{ detalle.id_tipo_ficha }}</td> -->
+          <td>{{ getNombreProducto(detalle.id_producto) }}</td>
+          <td>{{ detalle.nombre }}</td>
+          <td>{{ detalle.descripcion }}</td>
+          <td>{{ detalle.orden }}</td>
+          <td>
+            <span class="badge" [ngClass]="detalle.estado === 1 ? 'bg-success' : 'bg-danger'">
+              {{ detalle.estado === 1 ? 'Activo' : 'Inactivo' }}
+            </span>
           </td>
-        
-        <td>
-          <button
-            class="btn btn-warning btn-sm me-2"
-            (click)="editarDetalle(detalle)"
-            data-bs-toggle="modal"
-            data-bs-target="#modalDetalle"
-          >
-            Editar
-          </button>
-          <!-- 
+
+          <td>
+            <button
+              class="btn btn-warning btn-sm me-2"
+              (click)="editarDetalle(detalle)"
+              data-bs-toggle="modal"
+              data-bs-target="#modalDetalle"
+            >
+              Editar
+            </button>
+            <!-- 
           <button 
             class="btn btn-danger btn-sm"
             (click)="eliminarDetalle(detalle)">
             Eliminar
           </button> -->
-        </td>
-      </tr>
+          </td>
+        </tr>
+      }
     </tbody>
   </table>
 </div>
@@ -103,22 +102,25 @@
           <select class="form-select" [(ngModel)]="nuevoDetalle.id_producto">
             <option [ngValue]="0">Seleccione producto</option>
 
-            <option *ngFor="let prod of productos" [ngValue]="prod.id_producto">
-              {{ prod.nombre }}
-            </option>
+            @for (prod of productos; track $index) {
+              <option [ngValue]="prod.id_producto">
+                {{ prod.nombre }}
+              </option>
+            }
           </select>
           <div class="mb-3">
             <label class="form-label">Orden</label>
             <input type="text" class="form-control" [(ngModel)]="nuevoDetalle.orden" />
           </div>
           <div class="mb-3 form-check">
-          <input 
-            type="checkbox" 
-            class="form-check-input"
-            id="estadoCheck"
-            [(ngModel)]="nuevoDetalle.estado">
-          <label class="form-check-label" for="estadoCheck">Activo</label>
-      </div>
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="estadoCheck"
+              [(ngModel)]="nuevoDetalle.estado"
+            />
+            <label class="form-check-label" for="estadoCheck">Activo</label>
+          </div>
 
           <!-- FOOTER -->
           <div class="modal-footer">
