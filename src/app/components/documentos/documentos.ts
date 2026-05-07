@@ -24,11 +24,12 @@ export class Documentos implements OnInit {
   nuevoDetalle: Documento = {
     id_documento: 0,
     id_producto: 0,
-    id_tipo_ficha: 0,
     id_tipo_documento: 0,
+    id_tipo_ficha: 0,
     nombre_original: '',
-    version: 1,
-    pdf: null as any,
+    nombre_interno: '',
+    ruta_fisica: '',
+    version: 1,    
     estado: 1,
   };
 
@@ -103,7 +104,8 @@ export class Documentos implements OnInit {
       id_tipo_documento: 0,
       nombre_original: '',
       version: 1,
-      pdf: null as any,
+      nombre_interno: '',
+      ruta_fisica: '',
       estado: 1,
     };
   }
@@ -150,10 +152,11 @@ export class Documentos implements OnInit {
   }
 
   editarDetalle(detalle: Documento) {
-    this.nuevoDetalle = { ...detalle, pdf: detalle.nombre_original };
+    // this.nuevoDetalle = { ...detalle, pdf: detalle.nombre_original };
+    this.nuevoDetalle = { ...detalle };
 
     // 🔥 ASEGURAR PDF
-    this.nuevoDetalle.pdf = detalle.nombre_original; // 👈 ESTE ES EL CORRECTO
+    // this.nuevoDetalle.pdf = detalle.nombre_original; // 👈 ESTE ES EL CORRECTO
 
     // console.log('ID A ACTUALIZAR:', this.nuevoDetalle.id_documento);
     this.editando = true;
